@@ -1,0 +1,102 @@
+<div class="container mx-auto px-4 py-8">
+  <!-- Controls Section -->
+  <div class="mb-8 p-4 bg-white rounded-lg shadow">
+    <div class="flex flex-wrap gap-4 items-center">
+      <!-- Array Generation Controls -->
+      <div class="flex gap-2">
+        <button
+          class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          (click)="generateNewArray()"
+        >
+          New Array
+        </button>
+        <select
+          [(ngModel)]="arraySize"
+          (change)="generateNewArray()"
+          class="px-3 py-2 border rounded"
+        >
+          <option [value]="5">5 elements</option>
+          <option [value]="10">10 elements</option>
+          <option [value]="15">15 elements</option>
+          <option [value]="20">20 elements</option>
+        </select>
+      </div>
+
+      <!-- Algorithm Selection -->
+      <select [(ngModel)]="selectedAlgorithm" class="px-3 py-2 border rounded">
+        <option value="bubble">Bubble Sort</option>
+        <option value="quick">Quick Sort</option>
+        <option value="merge">Merge Sort</option>
+        <option value="selection">Selection Sort</option>
+        <option value="insertion">Insertion Sort</option>
+        <option value="heap">Heap Sort</option>
+        <option value="counting">Counting Sort</option>
+        <option value="radix">Radix Sort</option>
+        <option value="bucket">Bucket Sort</option>
+      </select>
+
+      <!-- Speed Control -->
+      <div class="flex items-center gap-2">
+        <label>Speed:</label>
+        <input
+          type="range"
+          [min]="10"
+          [max]="200"
+          [step]="10"
+          [(ngModel)]="speed"
+          (change)="updateSpeed()"
+          class="w-32"
+        />
+      </div>
+
+      <!-- Sort Button -->
+      <button
+        class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+        (click)="startSorting()"
+        [disabled]="isSorting"
+      >
+        Sort
+      </button>
+    </div>
+  </div>
+
+  <!-- Visualization Section -->
+  <div class="mb-8 p-4 bg-white rounded-lg shadow">
+    <div class="visualization-container h-64 relative">
+      <div
+        *ngFor="let element of array"
+        class="array-bar absolute bottom-0"
+        [style.height.%]="(element.value / maxValue) * 100"
+        [style.left.%]="(element.originalIndex / array.length) * 100"
+        [style.width.%]="(1 / array.length) * 80"
+        [ngClass]="{
+          'bg-blue-500': element.state === 'default',
+          'bg-yellow-500': element.state === 'comparing',
+          'bg-red-500': element.state === 'swapping',
+          'bg-green-500': element.state === 'sorted',
+          'bg-purple-500': element.state === 'pivot'
+        }"
+      ></div>
+    </div>
+  </div>
+
+  <div class="mb-8">
+    <app-d3-sorting-visualizer></app-d3-sorting-visualizer>
+  </div>
+
+  <!-- Statistics Section -->
+  <div class="grid grid-cols-3 gap-4">
+    <div class="p-4 bg-white rounded-lg shadow">
+      <h3 class="text-lg font-semibold mb-2">Comparisons</h3>
+      <p class="text-2xl">{{ stats.comparisons }}</p>
+    </div>
+    <div class="p-4 bg-white rounded-lg shadow">
+      <h3 class="text-lg font-semibold mb-2">Swaps</h3>
+      <p class="text-2xl">{{ stats.swaps }}</p>
+    </div>
+    <div class="p-4 bg-white rounded-lg shadow">
+      <h3 class="text-lg font-semibold mb-2">Time Elapsed</h3>
+      <p class="text-2xl">{{ stats.timeElapsed }}ms</p>
+    </div>
+  </div>
+</div>
