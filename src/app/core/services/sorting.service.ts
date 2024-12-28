@@ -329,38 +329,102 @@ export class SortingService {
   // ... (previous code remains the same until the sorting algorithms section)
 
   // Insertion Sort Implementation
+  // async insertionSort(): Promise<void> {
+  //   const arr = [...this.arraySubject.value];
+  //   const n = arr.length;
+
+  //   for (let i = 1; i < n; i++) {
+  //     const key = arr[i];
+  //     key.state = 'selected';
+  //     this.arraySubject.next([...arr]);
+  //     await this.delay();
+
+  //     let j = i - 1;
+  //     while (j >= 0 && (await this.compare(arr, j, i))) {
+  //       arr[j + 1] = arr[j];
+  //       arr[j + 1].state = 'swapping';
+  //       this.arraySubject.next([...arr]);
+  //       await this.delay();
+  //       arr[j + 1].state = 'default';
+  //       j--;
+  //     }
+
+  //     arr[j + 1] = key;
+  //     key.state = 'sorted';
+  //     this.arraySubject.next([...arr]);
+  //   }
+
+  //   // Mark all elements as sorted
+  //   for (const element of arr) {
+  //     element.state = 'sorted';
+  //   }
+  //   this.arraySubject.next(arr);
+  // }
+
   async insertionSort(): Promise<void> {
     const arr = [...this.arraySubject.value];
     const n = arr.length;
-
+  
+    // Reset all states to default at the start
+    arr.forEach(element => element.state = 'default');
+    this.arraySubject.next([...arr]);
+    
     for (let i = 1; i < n; i++) {
-      const key = arr[i];
+      // Select current element
+      const key = { ...arr[i] };  // Create a copy of the element
       key.state = 'selected';
+      arr[i].state = 'selected';
       this.arraySubject.next([...arr]);
       await this.delay();
-
+  
       let j = i - 1;
-      while (j >= 0 && (await this.compare(arr, j, i))) {
-        arr[j + 1] = arr[j];
-        arr[j + 1].state = 'swapping';
+      
+      // Compare and shift elements
+      while (j >= 0 && arr[j].value > key.value) {
+        // Move elements forward
+        arr[j + 1] = { ...arr[j], state: 'swapping' };
+        arr[j].state = 'swapping';
         this.arraySubject.next([...arr]);
         await this.delay();
+        
+        // Reset state of shifted element
         arr[j + 1].state = 'default';
         j--;
       }
-
-      arr[j + 1] = key;
-      key.state = 'sorted';
+  
+      // Place the key element in its correct position
+      arr[j + 1] = { ...key };
+      arr[j + 1].state = 'sorted';
+      this.arraySubject.next([...arr]);
+      await this.delay();
+  
+      // Mark all elements up to i as sorted
+      for (let k = 0; k <= i; k++) {
+        arr[k].state = 'sorted';
+      }
       this.arraySubject.next([...arr]);
     }
-
-    // Mark all elements as sorted
-    for (const element of arr) {
-      element.state = 'sorted';
-    }
-    this.arraySubject.next(arr);
+  
+    // Mark all remaining elements as sorted
+    arr.forEach(element => element.state = 'sorted');
+    this.arraySubject.next([...arr]);
   }
 
+  Insertion(){
+    // int n = arr.length;
+    //     for(int i=0; i<n; i++) {
+    //         int num = arr[i];
+    //         int j = i - 1;
+           
+    //         while(j >= 0 && num < arr[j]) {
+    //             arr[j+1] = arr[j];
+    //             j--;
+    //         }
+    //         arr[j+1] = num;
+    //     }
+       
+    //     return arr;
+  }
   // Heap Sort Implementation
   async heapSort(): Promise<void> {
     const arr = [...this.arraySubject.value];

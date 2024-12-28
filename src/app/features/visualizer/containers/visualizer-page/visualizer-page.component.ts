@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { SortingService } from '../../../../core/services/sorting.service';
 import { ArrayGeneratorService } from '../../../../core/services/array-generator.service';
 import { ArrayElement } from '../../../../core/models/array-element.interface';
@@ -8,11 +8,12 @@ import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { D3SortingVisualizerComponent } from '../../components/d3-sorting-visualizer/d3-sorting-visualizer.component';
+import { ControlsComponent } from '../../components/controls/controls.component';
 
 @Component({
   selector: 'app-visualizer-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, D3SortingVisualizerComponent],
+  imports: [CommonModule, FormsModule, D3SortingVisualizerComponent, ControlsComponent],
   templateUrl: './visualizer-page.component.html',
   styleUrl: './visualizer-page.component.css'
 })
@@ -27,7 +28,7 @@ export class VisualizerPageComponent {
   };
   
   arraySize = 5;
-  selectedAlgorithm: SortingAlgorithm = 'bubble';
+  @Input() selectedAlgorithm: SortingAlgorithm = 'bubble';
   speed = 100;
   isSorting = false;
   maxValue = 100;

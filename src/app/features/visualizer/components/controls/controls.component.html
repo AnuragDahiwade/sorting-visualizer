@@ -1,1 +1,32 @@
-<p>controls works!</p>
+<div class="controls-container">
+  @if (isSideBarExpanded) {
+  <button type="button" (click)="toggleSideBar()" class="toggle_button">
+    <img src="cross.png" alt="" class="cross" />
+  </button>
+  }@else {
+  <button type="button" (click)="toggleSideBar()" class="toggle_button">
+    <img src="three_bars.png" alt="" class="three_bars" />
+  </button>
+  }
+
+  <div class="side-nav-bar" [ngClass]="{ 'sidebar-open': isSideBarExpanded }">
+    <nav>
+      <ul>
+        <li>
+          <a routerLink="/sortings/bubble-sort" routerLinkActive="active"
+            >Bubble Sort</a
+          >
+        </li>
+        <li>
+          <a routerLink="/sortings/insertion-sort" routerLinkActive="active"
+            >Insertion Sort</a
+          >
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- <div class="content">
+    <router-outlet></router-outlet>
+  </div> -->
+</div>
