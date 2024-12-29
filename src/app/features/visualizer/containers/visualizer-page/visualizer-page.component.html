@@ -1,43 +1,63 @@
-<div class="container mx-auto px-4 py-8">
+<h1 class="title electrolize-regular">{{ selectedAlgorithm }} Sort</h1>
+
+<div
+  class="container mx-auto px-4 py-8"
+  style="display: flex; justify-content: center; flex-direction: column"
+>
   <!-- Navigation Section  -->
   <!-- <app-controls></app-controls> -->
 
   <!-- Controls Section -->
-  <div class="mb-8 p-4 bg-white rounded-lg shadow">
-    <div class="flex flex-wrap gap-4 items-center">
+  <div
+    class="mb-8 p-4 bg-white rounded-lg shadow"
+    style="display: flex; justify-content: center"
+  >
+    <div class="flex flex-wrap gap-4 items-center top-container">
       <!-- Array Generation Controls -->
-      <div class="flex gap-2">
-        <button
-          class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          (click)="generateNewArray()"
-        >
-          New Array
-        </button>
-        <select
-          [(ngModel)]="arraySize"
-          (change)="generateNewArray()"
-          class="px-3 py-2 border rounded"
-        >
-          <option [value]="5">5 elements</option>
-          <option [value]="10">10 elements</option>
-          <option [value]="15">15 elements</option>
-          <option [value]="20">20 elements</option>
-        </select>
+      <div class="select-group">
+        <div class="select-wrapper">
+          <select
+            [(ngModel)]="arraySize"
+            (change)="generateNewArray()"
+            class="custom-select"
+          >
+            <option [value]="5">5 elements</option>
+            <option [value]="10">10 elements</option>
+            <option [value]="15">15 elements</option>
+            <option [value]="20">20 elements</option>
+          </select>
+        </div>
+
+        <!-- Algorithm Selection -->
+        <!-- <div class="select-wrapper">
+          <select [(ngModel)]="selectedAlgorithm" class="custom-select">
+            <option value="bubble">Bubble Sort</option>
+            <option value="quick">Quick Sort</option>
+            <option value="merge">Merge Sort</option>
+            <option value="selection">Selection Sort</option>
+            <option value="insertion">Insertion Sort</option>
+            <option value="heap">Heap Sort</option>
+            <option value="counting">Counting Sort</option>
+            <option value="radix">Radix Sort</option>
+            <option value="bucket">Bucket Sort</option>
+          </select>
+        </div> -->
       </div>
 
-      <!-- Algorithm Selection -->
-      <select [(ngModel)]="selectedAlgorithm" class="px-3 py-2 border rounded">
-        <option value="bubble">Bubble Sort</option>
-        <option value="quick">Quick Sort</option>
-        <option value="merge">Merge Sort</option>
-        <option value="selection">Selection Sort</option>
-        <option value="insertion">Insertion Sort</option>
-        <option value="heap">Heap Sort</option>
-        <option value="counting">Counting Sort</option>
-        <option value="radix">Radix Sort</option>
-        <option value="bucket">Bucket Sort</option>
-      </select>
+      <!-- Sort Button -->
+      <div class="buttons-group">
+        <button
+          class="cool-button"
+          (click)="startSorting()"
+          [disabled]="isSorting"
+        >
+          Sort
+        </button>
 
+        <button class="cool-button" (click)="generateNewArray()">
+          New Array
+        </button>
+      </div>
       <!-- Speed Control -->
       <div class="flex items-center gap-2">
         <label>Speed:</label>
@@ -48,18 +68,9 @@
           [step]="10"
           [(ngModel)]="speed"
           (change)="updateSpeed()"
-          class="w-32"
+          class="custom-slider"
         />
       </div>
-
-      <!-- Sort Button -->
-      <button
-        class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-        (click)="startSorting()"
-        [disabled]="isSorting"
-      >
-        Sort
-      </button>
     </div>
   </div>
 
@@ -71,7 +82,7 @@
         class="array-bar absolute bottom-0"
         [style.height.%]="(element.value / maxValue) * 100"
         [style.left.%]="(element.originalIndex / array.length) * 100"
-        [style.width.%]="(1 / array.length) * 80"
+        [style.width.%]="(1 / array.length) * 70"
         [ngClass]="{
           'bg-blue-500': element.state === 'default',
           'bg-yellow-500': element.state === 'comparing',
@@ -88,7 +99,7 @@
   </div>
 
   <!-- Statistics Section -->
-  <div class="grid grid-cols-3 gap-4">
+  <div class="grid grid-cols-3 gap-4 stats electrolize-regular">
     <div class="p-4 bg-white rounded-lg shadow">
       <h3 class="text-lg font-semibold mb-2">Comparisons</h3>
       <p class="text-2xl">{{ stats.comparisons }}</p>

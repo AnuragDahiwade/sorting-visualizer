@@ -1,15 +1,23 @@
 .controls-container {
   display: flex;
   width: 100%;
-  /* height: 100vh; */
+}
+.vertical-scroll-only {
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
 }
 
+.open-exit-buttons {
+  padding: 1rem;
+  z-index: 3;
+}
 .toggle_button,
 .cross {
   border: none;
   background: transparent;
   transition: all ease-in-out 0.3s;
-  z-index: 1;
+  z-index: 3;
   position: fixed;
 }
 .toggle_button:hover,
@@ -29,16 +37,47 @@
   width: 250px;
   position: fixed;
   left: -250px;
-  background: #333;
+  background: #000000;
   transition: 0.3s;
-  color: black;
+  color: #e0e0e0;
   padding-top: 50px;
+  z-index: 2;
 }
 .sidebar-open {
   left: 0;
 }
 
-.side-nav-bar {
+ul {
+  list-style-type: none;
+}
+
+.cool-link {
+  color: #e0e0e0;
+  text-decoration: none;
+  position: relative;
+  font-size: 16px;
+  padding: 2px 4px;
+  transition: all 0.3s ease;
+  font-size: 1.6rem;
+}
+
+.cool-link::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 1px;
+  bottom: 0;
+  left: 0;
+  background-color: #e0e0e0;
+  transition: width 0.3s ease;
+}
+
+.cool-link:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.cool-link:hover::after {
+  width: 100%;
 }
 
 .content {

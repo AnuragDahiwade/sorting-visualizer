@@ -1,25 +1,89 @@
-<div class="controls-container">
-  @if (isSideBarExpanded) {
-  <button type="button" (click)="toggleSideBar()" class="toggle_button">
-    <img src="cross.png" alt="" class="cross" />
-  </button>
-  }@else {
-  <button type="button" (click)="toggleSideBar()" class="toggle_button">
-    <img src="three_bars.png" alt="" class="three_bars" />
-  </button>
-  }
+<div class="controls-container vertical-scroll-only">
+  <div class="open-exit-buttons">
+    @if (isSideBarExpanded) {
+    <button type="button" (click)="toggleSideBar()" class="toggle_button">
+      <img src="cross_1.png" alt="" class="cross" />
+    </button>
+    }@else {
+    <button type="button" (click)="toggleSideBar()" class="toggle_button">
+      <img src="three_bars_1.png" alt="" class="three_bars" />
+    </button>
+    }
+  </div>
 
   <div class="side-nav-bar" [ngClass]="{ 'sidebar-open': isSideBarExpanded }">
     <nav>
       <ul>
         <li>
-          <a routerLink="/sortings/bubble-sort" routerLinkActive="active"
+          <a
+            routerLink="/sortings/bubble-sort"
+            routerLinkActive="active"
+            class="cool-link"
             >Bubble Sort</a
           >
         </li>
         <li>
-          <a routerLink="/sortings/insertion-sort" routerLinkActive="active"
+          <a
+            routerLink="/sortings/insertion-sort"
+            routerLinkActive="active"
+            class="cool-link"
             >Insertion Sort</a
+          >
+        </li>
+        <li>
+          <a
+            routerLink="/sortings/selection-sort"
+            routerLinkActive="active"
+            class="cool-link"
+            >Selection Sort</a
+          >
+        </li>
+        <li>
+          <a
+            routerLink="/sortings/merge-sort"
+            routerLinkActive="active"
+            class="cool-link"
+            >Merge Sort</a
+          >
+        </li>
+        <li>
+          <a
+            routerLink="/sortings/quick-sort"
+            routerLinkActive="active"
+            class="cool-link"
+            >Quick Sort</a
+          >
+        </li>
+        <li>
+          <a
+            routerLink="/sortings/heap-sort"
+            routerLinkActive="active"
+            class="cool-link"
+            >Heap Sort</a
+          >
+        </li>
+        <li>
+          <a
+            routerLink="/sortings/counting-sort"
+            routerLinkActive="active"
+            class="cool-link"
+            >Counting Sort</a
+          >
+        </li>
+        <li>
+          <a
+            routerLink="/sortings/radix-sort"
+            routerLinkActive="active"
+            class="cool-link"
+            >Radix Sort</a
+          >
+        </li>
+        <li>
+          <a
+            routerLink="/sortings/bucket-sort"
+            routerLinkActive="active"
+            class="cool-link"
+            >Bucket Sort</a
           >
         </li>
       </ul>

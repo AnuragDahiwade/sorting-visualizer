@@ -2,10 +2,152 @@
   min-height: 10px;
 }
 
+.top-container {
+  padding: 1rem;
+  width: 90%;
+}
+
 .array-bar {
   width: 20px;
   height: 50px;
   background-color: black;
 
   transition: all 0.1s ease-in-out;
+}
+
+.title {
+  font-size: 3rem;
+  color: #e1e1e1;
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.custom-select {
+  position: relative;
+  padding: 12px;
+  width: 200px;
+  background: transparent;
+  border: 2px solid #000;
+  color: #e1e1e1;
+  font-size: 16px;
+  appearance: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.custom-select:hover {
+  background: #414141;
+}
+
+.custom-select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Custom select arrow */
+.select-wrapper {
+  position: relative;
+  width: fit-content;
+}
+
+.select-wrapper::after {
+  content: "▼";
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+/* Button Styling */
+.cool-button {
+  padding: 12px 24px;
+  background: transparent;
+  border: 2px solid #000;
+  color: #e1e1e1;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.cool-button:hover {
+  background: #000;
+  color: #fff;
+}
+
+.cool-button:active {
+  transform: scale(0.98);
+}
+
+/* Slider Styling */
+.custom-slider {
+  -webkit-appearance: none;
+  width: 200px;
+  height: 2px;
+  background: #000;
+  outline: none;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.custom-slider:hover {
+  opacity: 1;
+}
+
+.custom-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.custom-slider::-webkit-slider-thumb:hover {
+  background: #000;
+  transform: scale(1.1);
+}
+
+.custom-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.custom-slider::-moz-range-thumb:hover {
+  background: #000;
+  transform: scale(1.1);
+}
+
+.stats {
+  color: #e1e1e1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 1rem 5%;
+}
+
+.stats div {
+  display: flex;
+  gap: 1.7rem;
+  align-items: center;
+  font-size: 2.3rem;
+  border-bottom: 5px solid white;
+}
+
+.buttons-group,
+.select-group {
+  display: flex;
+  gap: 3rem;
+  margin-bottom: 1rem;
 }

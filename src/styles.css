@@ -7,3 +7,9 @@ body {
 body {
   background-color: #414141;
 }
+
+.electrolize-regular {
+  font-family: "Electrolize", serif;
+  font-weight: 400;
+  font-style: normal;
+}
