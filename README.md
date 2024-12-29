@@ -1,27 +1,80 @@
-# SortingVisualizer
+# Sorting Visualizer
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.12.
+A dynamic web application built with Angular that visualizes various sorting algorithms in action. View the live demo [here](https://sorting-visualizer-wtlu.onrender.com).
 
-## Development server
+## Overview
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+This Sorting Visualizer is an interactive tool that helps users understand how different sorting algorithms work by providing real-time visual representations of the sorting process.
 
-## Code scaffolding
+## Features
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- **Multiple Sorting Algorithms:**
 
-## Build
+  - Bubble Sort
+  - Selection Sort
+  - Insertion Sort
+  - Merge Sort
+  - Quick Sort
+  - Heap Sort
+  - Counting Sort
+  - Radix Sort
+  - Bucket Sort
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- **Interactive Controls:**
+  - Adjustable array size
+  - Variable sorting speed
+  - Array regeneration
+  - Start/Stop functionality
 
-## Running unit tests
+## Technologies Used
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- Angular
+- TypeScript
+- HTML5
+- CSS3
+- Angular Material (for UI components)
+- Render (for deployment)
 
-## Running end-to-end tests
+## Getting Started
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+### Prerequisites
 
-## Further help
+- Node.js (version 22.12.0)
+- npm (version 10.9.0)
+- Angular CLI (version ^18.2.12)
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### Installation
+
+1. Clone the repository
+
+```bash
+git clone [https://github.com/AnuragDahiwade/sorting-visualizer.git]
+```
+
+2. Navigate to the project directory
+
+```bash
+cd sorting-visualizer
+```
+
+3. Install dependencies
+
+```bash
+npm install
+```
+
+4. Run the development server
+
+```bash
+ng serve
+```
+
+5. Open your browser and navigate to `http://localhost:4200`
+
+## Usage
+
+1. **Select Algorithm:** Choose a sorting algorithm from the available options
+2. **Generate New Array:** Click the "Generate New Array" button to create a random array
+3. **Adjust Speed:** Use the speed slider to control the visualization speed
+4. **Start Sorting:** Click the "Sort" button to begin the visualization
+5. **Reset:** Use the stop button to halt the current sorting process
