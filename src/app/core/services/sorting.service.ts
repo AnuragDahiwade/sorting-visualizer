@@ -5,19 +5,17 @@ import { SortingStats } from '../models/sorting-stats.interface';
 import { SortingEvent } from '../models/sorting-event.interface';
 import { SortingAlgorithm } from '../models/sorting-config.interface';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SortingService {
-
   private arraySubject = new BehaviorSubject<ArrayElement[]>([]);
   private statsSubject = new BehaviorSubject<SortingStats>({
     comparisons: 0,
     swaps: 0,
     timeElapsed: 0,
     arrayAccesses: 0,
-    currentPhase: 'idle'
+    currentPhase: 'idle',
   });
   private eventsSubject = new BehaviorSubject<SortingEvent[]>([]);
   private speedMs = 100;
@@ -31,11 +29,14 @@ export class SortingService {
 
   // New method to generate random array
   generateArray(size: number, min: number = 5, max: number = 100): void {
-    const newArray: ArrayElement[] = Array.from({ length: size }, (_, index) => ({
-      value: Math.floor(Math.random() * (max - min + 1)) + min,
-      state: 'default',
-      originalIndex: index
-    }));
+    const newArray: ArrayElement[] = Array.from(
+      { length: size },
+      (_, index) => ({
+        value: Math.floor(Math.random() * (max - min + 1)) + min,
+        state: 'default',
+        originalIndex: index,
+      })
+    );
     this.arraySubject.next(newArray);
     this.resetStats();
   }
@@ -47,13 +48,16 @@ export class SortingService {
 
   // New method to get array as plain numbers
   getCurrentArrayValues(): number[] {
-    return this.arraySubject.value.map(element => element.value);
+    return this.arraySubject.value.map((element) => element.value);
   }
 
   // New method to generate specific array patterns
-  generateSpecialArray(type: 'nearly-sorted' | 'reversed' | 'few-unique' | 'sorted', size: number): void {
+  generateSpecialArray(
+    type: 'nearly-sorted' | 'reversed' | 'few-unique' | 'sorted',
+    size: number
+  ): void {
     let newArray: number[] = [];
-    
+
     switch (type) {
       case 'nearly-sorted':
         newArray = this.generateNearlySortedArray(size);
@@ -72,7 +76,7 @@ export class SortingService {
     const elements: ArrayElement[] = newArray.map((value, index) => ({
       value,
       state: 'default',
-      originalIndex: index
+      originalIndex: index,
     }));
 
     this.arraySubject.next(elements);
@@ -92,8 +96,9 @@ export class SortingService {
 
   private generateFewUniqueArray(size: number): number[] {
     const uniqueValues = [10, 20, 30, 40, 50]; // Few unique values
-    return Array.from({ length: size }, () => 
-      uniqueValues[Math.floor(Math.random() * uniqueValues.length)]
+    return Array.from(
+      { length: size },
+      () => uniqueValues[Math.floor(Math.random() * uniqueValues.length)]
     );
   }
 
@@ -102,7 +107,7 @@ export class SortingService {
     const elements: ArrayElement[] = array.map((value, index) => ({
       value,
       state: 'default',
-      originalIndex: index
+      originalIndex: index,
     }));
     this.arraySubject.next(elements);
     this.resetStats();
@@ -129,19 +134,19 @@ export class SortingService {
       swaps: 0,
       timeElapsed: 0,
       arrayAccesses: 0,
-      currentPhase: 'idle'
+      currentPhase: 'idle',
     });
     this.eventsSubject.next([]);
   }
 
   private async delay(): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, this.speedMs));
+    return new Promise((resolve) => setTimeout(resolve, this.speedMs));
   }
 
   private updateStats(type: 'comparison' | 'swap' | 'access'): void {
     const currentStats = this.statsSubject.value;
     const newStats = { ...currentStats };
-    
+
     switch (type) {
       case 'comparison':
         newStats.comparisons++;
@@ -153,23 +158,27 @@ export class SortingService {
         newStats.arrayAccesses++;
         break;
     }
-    
+
     this.statsSubject.next(newStats);
   }
 
-  private async compare(arr: ArrayElement[], i: number, j: number): Promise<boolean> {
+  private async compare(
+    arr: ArrayElement[],
+    i: number,
+    j: number
+  ): Promise<boolean> {
     arr[i].state = 'comparing';
     arr[j].state = 'comparing';
     this.arraySubject.next([...arr]);
-    
+
     await this.delay();
     this.updateStats('comparison');
-    
+
     const result = arr[i].value > arr[j].value;
-    
+
     arr[i].state = 'default';
     arr[j].state = 'default';
-    
+
     return result;
   }
 
@@ -177,12 +186,12 @@ export class SortingService {
     arr[i].state = 'swapping';
     arr[j].state = 'swapping';
     this.arraySubject.next([...arr]);
-    
+
     await this.delay();
     this.updateStats('swap');
-    
+
     [arr[i], arr[j]] = [arr[j], arr[i]];
-    
+
     arr[i].state = 'default';
     arr[j].state = 'default';
     this.arraySubject.next([...arr]);
@@ -192,7 +201,7 @@ export class SortingService {
   async bubbleSort(): Promise<void> {
     const arr = [...this.arraySubject.value];
     const n = arr.length;
-    
+
     for (let i = 0; i < n - 1; i++) {
       for (let j = 0; j < n - i - 1; j++) {
         if (await this.compare(arr, j, j + 1)) {
@@ -201,7 +210,7 @@ export class SortingService {
       }
       arr[n - i - 1].state = 'sorted';
     }
-    
+
     arr[0].state = 'sorted';
     this.arraySubject.next(arr);
   }
@@ -213,7 +222,11 @@ export class SortingService {
     this.arraySubject.next(arr);
   }
 
-  private async quickSortHelper(arr: ArrayElement[], low: number, high: number): Promise<void> {
+  private async quickSortHelper(
+    arr: ArrayElement[],
+    low: number,
+    high: number
+  ): Promise<void> {
     if (low < high) {
       const pi = await this.partition(arr, low, high);
       await this.quickSortHelper(arr, low, pi - 1);
@@ -221,20 +234,25 @@ export class SortingService {
     }
   }
 
-  private async partition(arr: ArrayElement[], low: number, high: number): Promise<number> {
+  private async partition(
+    arr: ArrayElement[],
+    low: number,
+    high: number
+  ): Promise<number> {
     const pivot = arr[high];
     pivot.state = 'pivot';
     this.arraySubject.next([...arr]);
-    
+
     let i = low - 1;
-    
+
     for (let j = low; j < high; j++) {
-      if (await this.compare(arr, j, high)) {
+      // Changed the comparison logic by adding ! operator
+      if (!(await this.compare(arr, j, high))) {
         i++;
         await this.swap(arr, i, j);
       }
     }
-    
+
     await this.swap(arr, i + 1, high);
     pivot.state = 'default';
     return i + 1;
@@ -244,10 +262,17 @@ export class SortingService {
   async mergeSort(): Promise<void> {
     const arr = [...this.arraySubject.value];
     await this.mergeSortHelper(arr, 0, arr.length - 1);
-    this.arraySubject.next(arr);
+
+    // Mark all elements as sorted at the end
+    arr.forEach((element) => (element.state = 'sorted'));
+    this.arraySubject.next([...arr]);
   }
 
-  private async mergeSortHelper(arr: ArrayElement[], left: number, right: number): Promise<void> {
+  private async mergeSortHelper(
+    arr: ArrayElement[],
+    left: number,
+    right: number
+  ): Promise<void> {
     if (left < right) {
       const mid = Math.floor((left + right) / 2);
       await this.mergeSortHelper(arr, left, mid);
@@ -256,42 +281,52 @@ export class SortingService {
     }
   }
 
-  private async merge(arr: ArrayElement[], left: number, mid: number, right: number): Promise<void> {
-    const n1 = mid - left + 1;
-    const n2 = right - mid;
-    
-    const L = arr.slice(left, mid + 1);
-    const R = arr.slice(mid + 1, right + 1);
-    
-    let i = 0;
-    let j = 0;
-    let k = left;
-    
-    while (i < n1 && j < n2) {
-      if (await this.compare(arr, left + i, mid + 1 + j)) {
-        arr[k] = R[j];
-        j++;
-      } else {
-        arr[k] = L[i];
-        i++;
-      }
-      arr[k].state = 'sorted';
+  private async merge(
+    arr: ArrayElement[],
+    left: number,
+    mid: number,
+    right: number
+  ): Promise<void> {
+    const tempArray = [...arr]; // Create a copy of the entire array
+
+    let i = left; // Starting index of left subarray
+    let j = mid + 1; // Starting index of right subarray
+    let k = left; // Starting index of merged array
+
+    while (i <= mid && j <= right) {
+      // Highlight elements being compared
+      arr[i].state = 'comparing';
+      arr[j].state = 'comparing';
       this.arraySubject.next([...arr]);
+
+      if (tempArray[i].value <= tempArray[j].value) {
+        arr[k] = { ...tempArray[i], state: 'default' };
+        i++;
+      } else {
+        arr[k] = { ...tempArray[j], state: 'default' };
+        j++;
+      }
+
+      // Update the array and reset states
+      this.arraySubject.next([...arr]);
+      await new Promise((resolve) => setTimeout(resolve, 100));
       k++;
     }
-    
-    while (i < n1) {
-      arr[k] = L[i];
-      arr[k].state = 'sorted';
+
+    // Copy remaining elements from left subarray
+    while (i <= mid) {
+      arr[k] = { ...tempArray[i], state: 'default' };
       this.arraySubject.next([...arr]);
+      await new Promise((resolve) => setTimeout(resolve, 100));
       i++;
       k++;
     }
-    
-    while (j < n2) {
-      arr[k] = R[j];
-      arr[k].state = 'sorted';
+
+    // Copy remaining elements from right subarray
+    while (j <= right) {
+      arr[k] = { ...tempArray[j], state: 'default' };
       this.arraySubject.next([...arr]);
+      await new Promise((resolve) => setTimeout(resolve, 100));
       j++;
       k++;
     }
@@ -305,7 +340,7 @@ export class SortingService {
     for (let i = 0; i < n - 1; i++) {
       let minIdx = i;
       arr[i].state = 'selected';
-      
+
       for (let j = i + 1; j < n; j++) {
         if (await this.compare(arr, minIdx, j)) {
           arr[minIdx].state = 'default';
@@ -313,15 +348,15 @@ export class SortingService {
           arr[minIdx].state = 'selected';
         }
       }
-      
+
       if (minIdx !== i) {
         await this.swap(arr, i, minIdx);
       }
-      
+
       arr[i].state = 'sorted';
       this.arraySubject.next([...arr]);
     }
-    
+
     arr[n - 1].state = 'sorted';
     this.arraySubject.next(arr);
   }
@@ -364,21 +399,21 @@ export class SortingService {
   async insertionSort(): Promise<void> {
     const arr = [...this.arraySubject.value];
     const n = arr.length;
-  
+
     // Reset all states to default at the start
-    arr.forEach(element => element.state = 'default');
+    arr.forEach((element) => (element.state = 'default'));
     this.arraySubject.next([...arr]);
-    
+
     for (let i = 1; i < n; i++) {
       // Select current element
-      const key = { ...arr[i] };  // Create a copy of the element
+      const key = { ...arr[i] }; // Create a copy of the element
       key.state = 'selected';
       arr[i].state = 'selected';
       this.arraySubject.next([...arr]);
       await this.delay();
-  
+
       let j = i - 1;
-      
+
       // Compare and shift elements
       while (j >= 0 && arr[j].value > key.value) {
         // Move elements forward
@@ -386,43 +421,41 @@ export class SortingService {
         arr[j].state = 'swapping';
         this.arraySubject.next([...arr]);
         await this.delay();
-        
+
         // Reset state of shifted element
         arr[j + 1].state = 'default';
         j--;
       }
-  
+
       // Place the key element in its correct position
       arr[j + 1] = { ...key };
       arr[j + 1].state = 'sorted';
       this.arraySubject.next([...arr]);
       await this.delay();
-  
+
       // Mark all elements up to i as sorted
       for (let k = 0; k <= i; k++) {
         arr[k].state = 'sorted';
       }
       this.arraySubject.next([...arr]);
     }
-  
+
     // Mark all remaining elements as sorted
-    arr.forEach(element => element.state = 'sorted');
+    arr.forEach((element) => (element.state = 'sorted'));
     this.arraySubject.next([...arr]);
   }
 
-  Insertion(){
+  Insertion() {
     // int n = arr.length;
     //     for(int i=0; i<n; i++) {
     //         int num = arr[i];
     //         int j = i - 1;
-           
     //         while(j >= 0 && num < arr[j]) {
     //             arr[j+1] = arr[j];
     //             j--;
     //         }
     //         arr[j+1] = num;
     //     }
-       
     //     return arr;
   }
   // Heap Sort Implementation
@@ -430,7 +463,7 @@ export class SortingService {
     const arr = [...this.arraySubject.value];
     const n = arr.length;
 
-    // Build max heap
+    // Build min heap
     for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
       await this.heapify(arr, n, i);
     }
@@ -447,22 +480,27 @@ export class SortingService {
     this.arraySubject.next(arr);
   }
 
-  private async heapify(arr: ArrayElement[], n: number, i: number): Promise<void> {
-    let largest = i;
+  private async heapify(
+    arr: ArrayElement[],
+    n: number,
+    i: number
+  ): Promise<void> {
+    let smallest = i;
     const left = 2 * i + 1;
     const right = 2 * i + 2;
 
-    if (left < n && await this.compare(arr, largest, left)) {
-      largest = left;
+    // Changed to find the smallest element instead of largest
+    if (left < n && !(await this.compare(arr, smallest, left))) {
+      smallest = left;
     }
 
-    if (right < n && await this.compare(arr, largest, right)) {
-      largest = right;
+    if (right < n && !(await this.compare(arr, smallest, right))) {
+      smallest = right;
     }
 
-    if (largest !== i) {
-      await this.swap(arr, i, largest);
-      await this.heapify(arr, n, largest);
+    if (smallest !== i) {
+      await this.swap(arr, i, smallest);
+      await this.heapify(arr, n, smallest);
     }
   }
 
@@ -481,7 +519,7 @@ export class SortingService {
 
     // Create counting array
     const count = new Array(max + 1).fill(0);
-    
+
     // Count occurrences
     for (const element of arr) {
       element.state = 'comparing';
@@ -522,7 +560,7 @@ export class SortingService {
   // Radix Sort Implementation
   async radixSort(): Promise<void> {
     const arr = [...this.arraySubject.value];
-    
+
     // Find maximum number to know number of digits
     let max = arr[0].value;
     for (const element of arr) {
@@ -543,7 +581,10 @@ export class SortingService {
     this.arraySubject.next(arr);
   }
 
-  private async countingSortForRadix(arr: ArrayElement[], exp: number): Promise<void> {
+  private async countingSortForRadix(
+    arr: ArrayElement[],
+    exp: number
+  ): Promise<void> {
     const n = arr.length;
     const output: ArrayElement[] = new Array(n);
     const count = new Array(10).fill(0);
@@ -568,7 +609,7 @@ export class SortingService {
       const digit = Math.floor(arr[i].value / exp) % 10;
       output[count[digit] - 1] = arr[i];
       count[digit]--;
-      
+
       arr[i].state = 'swapping';
       this.arraySubject.next([...arr]);
       await this.delay();
@@ -607,9 +648,11 @@ export class SortingService {
 
     // Put elements in buckets
     for (const element of arr) {
-      const bucketIndex = Math.floor((element.value * bucketCount) / (maxVal + 1));
+      const bucketIndex = Math.floor(
+        (element.value * bucketCount) / (maxVal + 1)
+      );
       buckets[bucketIndex].push(element);
-      
+
       element.state = 'comparing';
       this.arraySubject.next([...arr]);
       await this.delay();
@@ -648,11 +691,10 @@ export class SortingService {
     this.arraySubject.next(arr);
   }
 
-  
   // Public method to start sorting
   async sort(algorithm: SortingAlgorithm): Promise<void> {
     const startTime = Date.now();
-    
+
     switch (algorithm) {
       case 'bubble':
         await this.bubbleSort();
@@ -684,14 +726,12 @@ export class SortingService {
       default:
         throw new Error(`Algorithm ${algorithm} not implemented`);
     }
-    
+
     const endTime = Date.now();
     const currentStats = this.statsSubject.value;
     this.statsSubject.next({
       ...currentStats,
-      timeElapsed: endTime - startTime
+      timeElapsed: endTime - startTime,
     });
   }
-
-
 }
