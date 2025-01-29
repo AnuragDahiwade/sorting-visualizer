@@ -78,3 +78,4 @@ ng serve
 3. **Adjust Speed:** Use the speed slider to control the visualization speed
 4. **Start Sorting:** Click the "Sort" button to begin the visualization
 5. **Reset:** Use the stop button to halt the current sorting process
+

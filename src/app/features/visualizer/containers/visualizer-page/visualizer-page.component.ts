@@ -13,9 +13,14 @@ import { ControlsComponent } from '../../components/controls/controls.component'
 @Component({
   selector: 'app-visualizer-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, D3SortingVisualizerComponent, ControlsComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    D3SortingVisualizerComponent,
+    ControlsComponent,
+  ],
   templateUrl: './visualizer-page.component.html',
-  styleUrl: './visualizer-page.component.css'
+  styleUrl: './visualizer-page.component.css',
 })
 export class VisualizerPageComponent {
   array: ArrayElement[] = [];
@@ -24,9 +29,9 @@ export class VisualizerPageComponent {
     swaps: 0,
     timeElapsed: 0,
     arrayAccesses: 0,
-    currentPhase: 'idle'
+    currentPhase: 'idle',
   };
-  
+
   arraySize = 5;
   @Input() selectedAlgorithm: SortingAlgorithm = 'bubble';
   speed = 100;
@@ -40,7 +45,7 @@ export class VisualizerPageComponent {
   ngOnInit() {
     // Subscribe to array updates
     this.subscriptions.push(
-      this.sortingService.array$.subscribe(array => {
+      this.sortingService.array$.subscribe((array) => {
         this.array = array;
         this.updateMaxValue();
       })
@@ -48,7 +53,7 @@ export class VisualizerPageComponent {
 
     // Subscribe to stats updates
     this.subscriptions.push(
-      this.sortingService.stats$.subscribe(stats => {
+      this.sortingService.stats$.subscribe((stats) => {
         this.stats = stats;
       })
     );
@@ -58,7 +63,7 @@ export class VisualizerPageComponent {
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   generateNewArray() {
@@ -67,12 +72,12 @@ export class VisualizerPageComponent {
   }
 
   updateSpeed() {
-    this.sortingService.setSpeed(this.speed);
+    this.sortingService.setSpeed(200 - this.speed);
   }
 
   async startSorting() {
     if (this.isSorting) return;
-    
+
     this.isSorting = true;
     try {
       await this.sortingService.sort(this.selectedAlgorithm);
@@ -82,11 +87,13 @@ export class VisualizerPageComponent {
   }
 
   private updateMaxValue() {
-    this.maxValue = Math.max(...this.array.map(element => element.value));
+    this.maxValue = Math.max(...this.array.map((element) => element.value));
   }
 
   // Helper method for generating array patterns
-  generateSpecialArray(type: 'nearly-sorted' | 'reversed' | 'few-unique' | 'sorted') {
+  generateSpecialArray(
+    type: 'nearly-sorted' | 'reversed' | 'few-unique' | 'sorted'
+  ) {
     this.sortingService.generateSpecialArray(type, this.arraySize);
   }
 }
